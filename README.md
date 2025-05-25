@@ -16,3 +16,15 @@ How to start a java file Modbus.java:
       javac .\Modbus.java
     3. Run file Modbus
        java Modbus
+       
+For Windows PowerShell console.
+To check your Windows PowerShell version, the easiest and most reliable method is to use the $PSVersionTable command within the PowerShell console.
+For PowerShell 5.1+:
+  Run these commands before executing your Java program:
+    chcp 65001                             # Sets console to UTF-8
+    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8  # Forces UTF-8 output
+    java Modbus                         # Run your Java program
+  For Older PowerShell Versions:
+    $OutputEncoding = [System.Text.Encoding]::UTF8
+    chcp 65001
+    java Modbus                         # Run your Java program
