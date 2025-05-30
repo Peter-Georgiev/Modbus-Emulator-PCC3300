@@ -7,7 +7,6 @@ import java.io.UnsupportedEncodingException;
  * @author p.georgiev
  * Емулатор на Modbus с PowerCommand® 3.3.
  * Изисква Java 14+ ( https://openjdk.org/jeps/361 ).
- * 
  */
 public class Modbus {
     
@@ -20,7 +19,10 @@ public class Modbus {
         }
     }
 
-   // Тук се симулира четене от регистър – замени го с реална Modbus комуникация
+   /**
+    * Тук се симулира четене от регистър – замени го с реална Modbus комуникация
+    * и връщането на отговор.
+   */
     public static final Map<Integer, Integer> REGISTERS = new HashMap<>();
     static {
         // Адрес на регистъра 40010 - Current position of the generator set switch panel 
@@ -48,7 +50,10 @@ public class Modbus {
         REGISTERS.put(40301, 0); 
     }
     
-    // Event/Fault List
+    /**
+     * Event/Fault List - взети са от TABLE 185., page.400, 
+     * документ - Service Manual PowerCommand® 3.3 0900-0670 (Issue 30 02-2025)
+     */
     public static final Map<Integer, String> EVENT = new HashMap<>();
     static {
         // Код за грешка. Описание.
@@ -69,7 +74,7 @@ public class Modbus {
         EVENT.put(1449, "Overfrequency.");
     }
     
-    // Адрес на регистъра 40010
+    // Използва се само за адрес на регистъра 40010
     public static String stateSwitchPosition(int value) {
         return switch (value) {
             case 0 -> "Off: Генераторът е изключен.";
@@ -79,7 +84,7 @@ public class Modbus {
         };
     }
 
-    // Адрес на регистъра 40013
+    // Използва се само за адрес на регистъра 40013
     public static String stateActiveFaultType(int value) {
         return switch (value) {
             case 0 -> "None: Няма грешки.";
@@ -94,7 +99,10 @@ public class Modbus {
         return EVENT.getOrDefault(faultCode, "Неизвестна грешка (CODE: " + faultCode + ").");
     }
     
-    // Адрес на регистъра 40012
+    /**
+     * Използва се само за адрес на регистъра 40012.
+     * Стоиностите се взимат от (getActiveFaultCodeDescription), GET - Event/Fault List.
+     */
     public static String stateActiveFaultCode(int faultCode) {
         String codeMessage = getActiveFaultCodeDescription(faultCode);
         return "CODE - " + faultCode + " " + codeMessage;
